@@ -40,11 +40,20 @@ Demonstrate your understanding of this week's concepts by answering the followin
 
 - [ ] Explain the difference between `Relational Databases` and `SQL`.
 
+<!-- Relational databases link information from tables, data collections, and can create or manage databases. -->
+<!-- SQL is optimized for writing queries, manipulating data, and retrieving data. -->
+
 - [ ] Why do tables need a `primary key`?
+
+<!-- Primary keys are unique identifiers for each table in the database and ensure no two values are the same by enforcing the integrity of an entity. -->
 
 - [ ] What is the name given to a table column that references the primary key on another table.
 
+<!-- Bridge tables -->
+
 - [ ] What do we need in order to have a _many to many_ relationship between two tables.
+
+<!-- Foreign keys -->
 
 ## Minimum Viable Product
 
