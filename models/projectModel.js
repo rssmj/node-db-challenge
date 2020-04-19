@@ -5,6 +5,7 @@ module.exports = {
 	getProjectById,
 	addProject,
 	getProjectTasks,
+	removeProject,
 };
 
 function getProjects() {
@@ -24,5 +25,15 @@ function addProject(project) {
 }
 
 function getProjectTasks(id) {
-	return db('tasks').where({ projectId: id });
+	return db('tasks').where({ project_id: id });
+}
+
+async function removeProject(id) {
+	const deletedProject = await getProjectById(id);
+	return db('projects')
+		.where({ id })
+		.del()
+		.then(() => {
+			return deletedProject;
+		});
 }

@@ -2,18 +2,23 @@ const db = require('../data/dbConfig.js');
 
 module.exports = {
 	getTasks,
+	getTaskById,
 	addTask,
+	removeTask,
 };
 
 function getTasks() {
 	return db('tasks')
-		.join('projects', 'projectsId', '=', 'tasks.projectId')
+		.join('projects as p', 'p.id', 'project_id', '=', 'tasks.project_id')
 		.select(
-			'projects.name as projectName',
-			'projects.description as projectDescription',
-			'tasks.*',
-			'project.id'
+			'p.name as projectName',
+			'p.description as projectDescription',
+			'tasks.*'
 		);
+}
+
+function getTaskById(id) {
+	return db('tasks').where({ id }).first();
 }
 
 function addTask(task) {
@@ -21,5 +26,15 @@ function addTask(task) {
 		.insert(task, 'id')
 		.then((ids) => {
 			return getTaskById(ids[0]);
+		});
+}
+
+async function removeTask(id) {
+	const deletedTask = await getTaskById(id);
+	return db('tasks')
+		.where({ id })
+		.del()
+		.then(() => {
+			return deletedTask;
 		});
 }
