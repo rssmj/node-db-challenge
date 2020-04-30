@@ -12,7 +12,7 @@ function getResources() {
 }
 
 function getResourceById(id) {
-	return db('resource').where({ id }).first();
+	return db('resources').where({ id }).first();
 }
 
 function addResource(resource) {

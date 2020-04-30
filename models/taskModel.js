@@ -9,7 +9,7 @@ module.exports = {
 
 function getTasks() {
 	return db('tasks')
-		.join('projects as p', 'p.id', 'project_id', '=', 'tasks.project_id')
+		.join('projects as p', 'p.id', 'tasks.project_id')
 		.select(
 			'p.name as projectName',
 			'p.description as projectDescription',

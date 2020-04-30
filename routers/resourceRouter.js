@@ -3,28 +3,31 @@ const Resource = require('../models/resourceModel.js');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-	const resource = Resource.getResources();
-	resource
-		? res.status(200).json(resource)
-		: res
-				.status(400)
-				.json({ UHH: 'no resources here' })
-				.catch(() => {
-					res.status(500).json({ NOPE: 'not sure' });
-				});
+	Resource.getResources().then((resource) => {
+
+		res.status(200).json(resource);
+		res
+		.status(400)
+		.json({ UHH: 'no resources here' })
+	})
+		.catch(() => {
+			res.status(500).json({ NOPE: 'not sure' });
+		});
 });
 
 router.get('/:id', (req, res) => {
 	const { id } = req.params;
-	const resource = Resource.getResourceById(id);
-	resource
-		? res.status(200).json({
+Resource.getResourceById(id)
+		.then((resource) => {
+		
+			res.status(200).json({
 				INCOMING: `resource: ${id},`,
 				SEE: resource,
-		  })
-		: res
-				.status(400)
-				.json({ MISSING: `resource: ${id} is not here` })
+			})
+			res
+			.status(400)
+			.json({ MISSING: `resource: ${id} is not here` })
+			})
 				.catch(() => {
 					res.status(500).json({ NOPE: 'not sure' });
 				});

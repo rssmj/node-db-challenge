@@ -3,28 +3,26 @@ const Task = require('../models/taskModel.js');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-	const task = Task.getTasks();
-	task
-		? res.status(200).json(task)
-		: res
-				.status(400)
-				.json({ UHH: 'no tasks here' })
-				.catch(() => {
-					res.status(500).json({ NOPE: 'not sure' });
-				});
+	Task.getTasks()
+		.then((task) => {
+			res.status(200).json(task);
+			res.status(400).json({ UHH: 'no tasks here' });
+		})
+		.catch(() => {
+			res.status(500).json({ NOPE: 'not sure' });
+		});
 });
 
 router.get('/:id', (req, res) => {
 	const { id } = req.params;
-	const task = Task.getTaskById(id);
-	task
-	? res.status(200).json({
-		INCOMING: `task: ${id},`,
-		SEE: task,
-  })
-: res
-		.status(400)
-		.json({ MISSING: `task: ${id} is not here`, })
+	Task.getTaskById(id)
+		.then((task) => {
+			res.status(200).json({
+				INCOMING: `task: ${id},`,
+				SEE: task,
+			});
+			res.status(400).json({ MISSING: `task: ${id} is not here` });
+		})
 		.catch(() => {
 			res.status(500).json({ NOPE: 'not sure' });
 		});

@@ -3,31 +3,27 @@ const Project = require('../models/projectModel.js');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-	const project = Project.getProjects();
-	project
-		? res.status(200).json(project)
-		: res
-				.status(400)
-				.json({ UHH: 'no projects here' })
-				.catch(() => {
-					res.status(500).json({ NOPE: 'not sure' });
-				});
+	Project.getProjects()
+		.then((project) => {
+			res.status(200).json(project);
+			res.status(400).json({ UHH: 'no projects here' });
+		})
+		.catch(() => {
+			res.status(500).json({ NOPE: 'not sure' });
+		})
 });
 
 router.get('/:id', (req, res) => {
 	const { id } = req.params;
-	const project = Project.getProjectById(id);
-	project
-		? res.status(200).json({
-				INCOMING: `project: ${id},`,
-				SEE: project,
-		  })
-		: res
-				.status(400)
-				.json({ MISSING: `project: ${id} is not here` })
-				.catch(() => {
-					res.status(500).json({ NOPE: 'not sure' });
-				});
+	Project.getProjectById(id)
+		.then((project) => {
+				res.status(200).json(project
+				  )
+				 res.status(400).json({ MISSING: `project id: ${id} is not here` });
+		})
+		.catch(() => {
+			res.status(500).json({ NOPE: `not sure about project id: ${id}` });
+		});
 });
 
 router.post('/', (req, res) => {
@@ -35,7 +31,9 @@ router.post('/', (req, res) => {
 	const body = req.body;
 	const project = Project.addProject(body, id);
 	project
-		? res.status(201).json({ RECIEVING: `new project: ${id}`, DETAILS: body })
+		? res
+				.status(201)
+				.json({ RECIEVING: `new project id: ${id}`, DETAILS: body })
 		: res
 				.status(400)
 				.json({ LOST: 'project' })
@@ -67,7 +65,7 @@ router.delete('/:id', (req, res) => {
 	const { id } = req.params;
 	const project = Project.removeProject(id);
 	project
-		? res.status(201).json({ POOF: `project id: ${id} - gone` })
+		? res.status(200).json({ POOF: `project id: ${id} - gone` })
 		: res
 				.status(400)
 				.json({ SORRY: 'no deleting this project' })

@@ -13,7 +13,7 @@ function getProjects() {
 }
 
 function getProjectById(id) {
-	return db('project').where({ id }).first();
+	return db('projects').where({ id }).first();
 }
 
 function addProject(project) {
